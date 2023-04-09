@@ -8,18 +8,28 @@
 
       <%- include('./includes/navigation.ejs') %>
 
-    <div class="main">
+      <div class="main">
         <form class="mac-form" action="/googlesearch" method="POST">
-            <div class="form-control">
-                <label for="mac">MAC Address</label>
-                <input type="text" name="mac" id="mac"> 
-            </div>
+          <div class="form-control">
+            <label for="mac" class="form-label">MAC Address</label>
+            <input type="text" name="mac" id="mac" class="form-input"> 
+          </div>
 
-            <button class="btn" type="submit">Submit</button>
+          <div class="form-control">
+            <label for="ref" class="form-label">Reference</label>
+            <input type="text" name="ref" id="ref" class="form-input"> 
+          </div>
+
+          <div class="form-control">
+            <label for="details" class="form-label">Details</label>
+            <input type="text" name="details" id="details" class="form-input"> 
+          </div>
+
+          <button class="btn" type="submit">Submit</button>
         </form>
-    </div>
+      </div>
 
-    <%- include('./includes/footer.ejs') %>
+      <%- include('./includes/footer.ejs') %>
     </div>
   </body>
 </html>
