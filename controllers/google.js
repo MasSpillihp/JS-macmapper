@@ -1,8 +1,11 @@
 const axios = require("axios");
+const express = require("express");
+const fs = require("fs");
 require("dotenv").config();
 
 exports.postGoogle = (req, res, next) => {
   // Get the MAC address from the user form
+  // test mac 9c:1c:12:b0:45:f1
   const macAddress = req.body.mac;
   const apiKey = process.env.GOOGLE_API_KEY;
 
@@ -17,14 +20,17 @@ exports.postGoogle = (req, res, next) => {
     })
     .then((response) => {
       //deal with API response here
-      console.log(response);
-      res.redirect("/map");
-    })
-    .catch((error) => {
-      console.log(error);
-      res.redirect("/");
-      // debugging api key env not parsing
-      console.log("env variable: " + process.env.GOOGLE_API_KEY);
-      console.log("apiKey variable: " + apiKey);
+      const dataPath = "./data/response.json";
+      const responseData = JSON.stringify(response["data"]);
+
+      fs.appendFile(dataPath, responseData, (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Response added to file");
+        }
+      });
     });
+
+  res.redirect("/");
 };

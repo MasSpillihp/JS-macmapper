@@ -15,4 +15,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(homeRoutes);
 app.use(googleRouters);
 
-app.listen(3000);
+app.listen(3000, () => {
+  console.log("Server listening on port 3000");
+});
