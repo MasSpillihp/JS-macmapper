@@ -16,7 +16,8 @@ const createTable = async () => {
     await connection.query(`
       CREATE TABLE IF NOT EXISTS locations (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        mac_address VARCHAR(17) NOT NULL,
+        mac1 VARCHAR(17) NOT NULL,
+        mac2 VARCHAR(17) NOT NULL,
         latitude FLOAT NOT NULL,
         longitude FLOAT NOT NULL,
         accuracy FLOAT NOT NULL,
@@ -27,7 +28,6 @@ const createTable = async () => {
     connection.release();
     console.log("Table created successfully");
   } catch (err) {
-    console.log(process.env.MYSQL_PASSWORD);
     console.error(err);
   }
 };
@@ -35,7 +35,8 @@ const createTable = async () => {
 createTable();
 
 const saveLocation = async (
-  macAddress,
+  mac1,
+  mac2,
   latitude,
   longitude,
   accuracy,
@@ -45,10 +46,10 @@ const saveLocation = async (
   try {
     const connection = await pool.getConnection();
     const query = `
-      INSERT INTO locations (mac_address, latitude, longitude, accuracy, details, ref)
-      VALUES (?, ?, ?, ?, ?, ?)
+      INSERT INTO locations (mac1, mac2, latitude, longitude, accuracy, details, ref)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
-    const values = [macAddress, latitude, longitude, accuracy, details, ref];
+    const values = [mac1, mac2, latitude, longitude, accuracy, details, ref];
     const [result, fields] = await connection.execute(query, values);
     connection.release();
     console.log(`Location saved successfully with ID ${result.insertId}`);
@@ -57,6 +58,21 @@ const saveLocation = async (
   }
 };
 
+const lastSearch = async () => {
+  try {
+    const connection = await pool.getConnection();
+    const query =
+      "SELECT latitude, longitude, ref FROM locations ORDER BY id DESC LIMIT 1";
+    const [rows, fields] = await connection.execute(query);
+    connection.release();
+    return rows[0];
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 module.exports = {
   saveLocation,
+  lastSearch,
 };
