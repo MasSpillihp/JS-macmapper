@@ -1,0 +1,49 @@
+<%- include('./includes/head.ejs') %>
+  </head>
+  <body>
+    <div class="content-wrapper">
+      <div class="header">
+        <div class="header__title__1">MAC Mapper</div>
+        <div class="header__title__2"><%= pageTitle %></div>
+      </div>
+
+      <%- include('./includes/navigation.ejs') %>
+
+    <div class="main">
+      <div class="table-container">
+        <p>Search Results:</p>
+        <table class="table-details">
+          <thead>
+            <tr>
+              <th>Reference</th>
+              <th>MAC Address 1</th>
+              <th>MAC Address 2</th>
+              <th>Lat</th>
+              <th>Long</th>
+              <th>Accuracy</th>
+              <th>Map</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (var i = 0; i < locations.length; i++) {%>
+              <tr>
+                <td><%= locations[i].ref%></td>
+                <td><%= locations[i].mac1%></td>
+                <td><%= locations[i].mac2%></td>
+                <td><%= locations[i].latitude%></td>
+                <td><%= locations[i].longitude%></td>
+                <td><%= locations[i].accuracy%>M</td>
+                <td> <a href="/map/<%= locations[i].id %>">Map</a></td>
+              </tr>
+              <% }%>
+          </tbody>
+        </table>
+
+        
+      </div>
+    </div>
+
+    <%- include('./includes/footer.ejs') %>
+    </div>
+  </body>
+</html>

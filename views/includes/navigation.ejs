@@ -1,16 +1,16 @@
 <div class="navigation">
     <ul class="main-nav__item-list">
         <li class="main-nav__item">
-            <a href="/">Home</a>
+            <a class="<%= path === '/'? 'active' :''%>" href="/">Home</a>
         </li>
         <li class="main-nav__item">
-            <a href="/map">Map</a>
+            <a class="<%= path === '/map'? 'active' :''%>" href="/map">Map</a>
         </li>
         <li class="main-nav__item">
-            <a href="/history">History</a>
+            <a class="<%= path === '/search'? 'active' :''%>" href="/search">Search</a>
         </li>
         <li class="main-nav__item">
-            <a href="/admin">Admin</a>
+            <a class="<%= path === '/admin'? 'active' :''%>" href="/admin">Admin</a>
         </li>
     </ul>
 </div>

@@ -1,3 +1,5 @@
 .env
 .prettierignore
+mac.txt
 node_modules/
+data/

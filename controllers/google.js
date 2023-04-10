@@ -40,11 +40,12 @@ exports.postGoogle = async (req, res, next) => {
     const accuracy = response["data"]["accuracy"];
 
     await saveLocation(mac1, mac2, latitude, longitude, accuracy, details, ref);
-    res.redirect("/");
+    res.redirect("/map");
   } catch (err) {
     console.error(err);
     res.render('../views/error', {
       pageTitle: 'Error',
+      path: '/error',
       errorName: 'An error occured with the MAC address API'
     })
   }

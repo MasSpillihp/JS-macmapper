@@ -1,4 +1,5 @@
 const mysql = require("mysql2/promise");
+const { connect } = require("../routes/home");
 
 const pool = mysql.createPool({
   host: "localhost",
@@ -62,7 +63,7 @@ const lastSearch = async () => {
   try {
     const connection = await pool.getConnection();
     const query =
-      "SELECT latitude, longitude, ref FROM locations ORDER BY id DESC LIMIT 1";
+      "SELECT latitude, longitude, ref, mac1, mac2, accuracy FROM locations ORDER BY id DESC LIMIT 1";
     const [rows, fields] = await connection.execute(query);
     connection.release();
     return rows[0];
@@ -72,7 +73,36 @@ const lastSearch = async () => {
   }
 };
 
+const getAllSearches = async () => {
+  try {
+    const connection = await pool.getConnection();
+    const query = "SELECT * FROM locations";
+    const [rows, fields] = await connection.execute(query);
+    connection.release();
+    return rows;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const getSearchbyID = async (locationId) => {
+  try {
+    const connection = await pool.getConnection();
+    const query = "SELECT * FROM locations WHERE id = ?";
+    const values = [locationId];
+    const [rows, fields] = await connection.execute(query, values);
+    connection.release();
+    return rows;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 module.exports = {
   saveLocation,
   lastSearch,
+  getAllSearches,
+  getSearchbyID,
 };

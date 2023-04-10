@@ -6,9 +6,11 @@ const homeController = require("../controllers/home");
 
 router.get("/", homeController.getHomePage);
 
+router.get("/map/:id", homeController.mapSpecificSearch);
+
 router.get("/map", homeController.getMap);
 
-router.get("/history", homeController.getHistory);
+router.get("/search", homeController.getSearch);
 
 router.get("/admin", homeController.getAdmin);
 
