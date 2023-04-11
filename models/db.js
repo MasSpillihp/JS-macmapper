@@ -100,9 +100,31 @@ const getSearchbyID = async (locationId) => {
   }
 };
 
+const getSearchResults = async (searchQuery) => {
+  // function to query DB based upon searchQuery from form within search.ejs
+  // only searches 'ref' column at the moment
+  try {
+    const connection = await pool.getConnection();
+    const query = "SELECT * FROM locations WHERE ref LIKE ?";
+    //prettier-ignore
+    const values = ['%' + searchQuery + '%'];
+    const [rows, fields] = await connection.execute(query, values);
+
+    // debug
+    // console.log(rows);
+
+    connection.release();
+    return rows;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 module.exports = {
   saveLocation,
   lastSearch,
   getAllSearches,
   getSearchbyID,
+  getSearchResults,
 };

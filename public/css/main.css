@@ -146,7 +146,7 @@ body {
   align-items: center;
   justify-content: center;
   width: 100%;
-  margin: 50px;
+  margin: 25px;
   border-collapse: collapse;
   font-size: 16px;
   color: #333;
@@ -199,44 +199,39 @@ body {
   width: 850px;
 }
 
-.next-prev-btn a {
-  border-top: 1px solid #005792;
-  background: #005792;
-  background: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    from(#005792),
-    to(#005792)
-  );
-  background: -webkit-linear-gradient(top, #005792, #005792);
-  background: -moz-linear-gradient(top, #005792, #005792);
-  background: -ms-linear-gradient(top, #005792, #005792);
-  background: -o-linear-gradient(top, #005792, #005792);
-  padding: 5px 10px;
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
-  -webkit-box-shadow: rgba(0, 0, 0, 1) 0 1px 0;
-  -moz-box-shadow: rgba(0, 0, 0, 1) 0 1px 0;
-  box-shadow: rgba(0, 0, 0, 1) 0 1px 0;
-  text-shadow: rgba(0, 0, 0, 0.4) 0 1px 0;
-  color: white;
-  font-size: 14px;
-  font-family: Georgia, serif;
+.query-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0px;
+  padding: 0px;
+}
+
+.query-form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.form-control {
+  margin-right: 10px;
+}
+
+.form-input {
+  padding: 5px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.query-form .btn {
+  max-height: 50px;
+}
+
+.next-prev-btn .btn {
   text-decoration: none;
-  vertical-align: middle;
-}
-
-.next-prev-btn a:hover {
-  border-top-color: #005792;
-  background: #005792;
-  color: #ccc;
-}
-
-.next-prev-btn a:active {
-  border-top-color: #005792;
-  background: #005792;
+  display: inline-block;
+  scale: 0.75;
 }
 
 .footer {

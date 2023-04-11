@@ -10,6 +10,8 @@ router.get("/map/:id", homeController.mapSpecificSearch);
 
 router.get("/map", homeController.getMap);
 
-router.get("/search", homeController.getSearch);
+router.get("/search", homeController.getSeeAllSearches);
+
+router.post("/search-results", homeController.SearchResults);
 
 module.exports = router;

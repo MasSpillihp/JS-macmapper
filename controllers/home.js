@@ -1,9 +1,15 @@
 const fs = require("fs");
-const { lastSearch, getAllSearches, getSearchbyID } = require("../models/db");
+const {
+  lastSearch,
+  getAllSearches,
+  getSearchbyID,
+  getSearchResults,
+} = require("../models/db");
 const { parseArgs } = require("util");
 require("dotenv").config();
 
 exports.getHomePage = (req, res, next) => {
+  // loads the /Home page which contains the user form to search for MAC addresses
   res.render("home", {
     pageTitle: "Home",
     path: "/",
@@ -11,6 +17,7 @@ exports.getHomePage = (req, res, next) => {
 };
 
 exports.getMap = async (req, res, next) => {
+  // loads the /map page which defaults to loads the last searched MAC address
   try {
     const lastLocation = await lastSearch();
     res.render("map", {
@@ -35,7 +42,8 @@ exports.getMap = async (req, res, next) => {
   }
 };
 
-exports.getSearch = async (req, res, next) => {
+exports.getSeeAllSearches = async (req, res, next) => {
+  // loads the search page which will hold a table containing all the searches performed in groups of 10
   try {
     const locations = await getAllSearches();
     const limit = 10; // sets the limit records per page to 10
@@ -57,6 +65,8 @@ exports.getSearch = async (req, res, next) => {
 };
 
 exports.mapSpecificSearch = async (req, res, next) => {
+  // loads the /map page but instead of last search, it loads the specific search by the user from
+  // the /search page - by clicking 'map' on the locations table
   try {
     const locationId = req.params.id;
     const location = await getSearchbyID(locationId);
@@ -74,4 +84,25 @@ exports.mapSpecificSearch = async (req, res, next) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+exports.SearchResults = async (req, res, next) => {
+  // takes search query from search.ejs form and queries database. renders /search-results with results
+  const searchQuery = req.body.query;
+  const searchResults = await getSearchResults(searchQuery);
+  const limit = 10; // sets the limit records per page to 10
+  const totalCount = searchResults.length;
+  let currentPage = req.query.page ? parseInt(req.query.page) : 1; // current page number
+  let startIndex = (currentPage - 1) * limit; // index of first record to show on current page
+  //debug
+  // console.log("search results: " + searchResults);
+  res.render("search-results", {
+    pageTitle: "Search Results",
+    path: "/search",
+    locations: searchResults,
+    startIndex: startIndex,
+    limit: limit,
+    totalCount: totalCount,
+    currentPage: currentPage,
+  });
 };
