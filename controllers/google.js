@@ -8,10 +8,6 @@ require("dotenv").config();
 exports.postGoogle = async (req, res, next) => {
   // Get the details from the user form
 
-  // test macs
-  // 3c:37:86:5d:75:d4
-  // 9c:1c:12:b0:45:f1
-
   const mac1 = req.body.mac1;
   const mac2 = req.body.mac2;
   const ref = req.body.ref;
@@ -41,12 +37,22 @@ exports.postGoogle = async (req, res, next) => {
 
     await saveLocation(mac1, mac2, latitude, longitude, accuracy, details, ref);
     res.redirect("/map");
-  } catch (err) {
-    console.error(err);
-    res.render('../views/error', {
-      pageTitle: 'Error',
-      path: '/error',
-      errorName: 'An error occured with the MAC address API'
-    })
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      //render specific 404 geolocation not found error page 
+      res.render('../views/error', {
+        pageTitle: 'Error',
+        path: '/error',
+        errorName: 'Geolocation error: MAC address not found'
+      })
+
+    } else {
+      // catches all other errors
+      console.error(error);
+      res.render('../views/error', {
+        pageTitle: 'Error',
+        path: '/error',
+        errorName: 'An error occured with the MAC address API'},)
   }
+}
 };

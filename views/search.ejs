@@ -25,7 +25,7 @@
             </tr>
           </thead>
           <tbody>
-            <% for (var i = 0; i < locations.length; i++) {%>
+            <% for (var i = startIndex; i < (startIndex + limit) && i < locations.length; i++) {%>
               <tr>
                 <td><%= locations[i].ref%></td>
                 <td><%= locations[i].mac1%></td>
@@ -38,7 +38,15 @@
               <% }%>
           </tbody>
         </table>
+        <div class="next-prev-btn">
+          <% if (startIndex > 0 ) { %>
+            <a href="/search?limit=<%= limit %>&page=<%= currentPage - 1 %>">Prev</a>
+          <% } %>
 
+          <% if (startIndex + limit < totalCount) { %>
+            <a href="/search?limit=<%= limit %>&page=<%= currentPage + 1 %>">Next</a>
+          <% } %>
+        </div>
         
       </div>
     </div>

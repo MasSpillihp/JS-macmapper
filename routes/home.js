@@ -12,6 +12,4 @@ router.get("/map", homeController.getMap);
 
 router.get("/search", homeController.getSearch);
 
-router.get("/admin", homeController.getAdmin);
-
 module.exports = router;

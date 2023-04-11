@@ -1,6 +1,6 @@
 const fs = require("fs");
 const { lastSearch, getAllSearches, getSearchbyID } = require("../models/db");
-const { off } = require("process");
+const { parseArgs } = require("util");
 require("dotenv").config();
 
 exports.getHomePage = (req, res, next) => {
@@ -37,13 +37,19 @@ exports.getMap = async (req, res, next) => {
 
 exports.getSearch = async (req, res, next) => {
   try {
-    const offset = parseInt(req.query.offset) || 0;
-    const limit = parseInt(req.query.limit) || 10;
-    const locations = await getAllSearches(offset, limit);
+    const locations = await getAllSearches();
+    const limit = 10; // sets the limit records per page to 10
+    const totalCount = locations.length;
+    let currentPage = req.query.page ? parseInt(req.query.page) : 1; // current page number
+    let startIndex = (currentPage - 1) * limit; // index of first record to show on current page
     res.render("search", {
       pageTitle: "Search",
       path: "/search",
       locations: locations,
+      startIndex: startIndex,
+      limit: limit,
+      totalCount: totalCount,
+      currentPage: currentPage,
     });
   } catch (error) {
     console.log(error);
@@ -54,7 +60,6 @@ exports.mapSpecificSearch = async (req, res, next) => {
   try {
     const locationId = req.params.id;
     const location = await getSearchbyID(locationId);
-    console.log(location[0].id);
     res.render("specific-map", {
       pageTitle: "View Search",
       path: "/map",
@@ -69,11 +74,4 @@ exports.mapSpecificSearch = async (req, res, next) => {
   } catch (error) {
     console.log(error);
   }
-};
-
-exports.getAdmin = (req, res, next) => {
-  res.render("admin", {
-    pageTitle: "Admin",
-    path: "/admin",
-  });
 };
