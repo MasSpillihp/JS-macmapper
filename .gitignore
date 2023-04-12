@@ -4,3 +4,4 @@ mac.txt
 node_modules/
 data/
 todo.txt
+global.d.ts

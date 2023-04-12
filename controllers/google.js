@@ -1,9 +1,14 @@
 const axios = require("axios");
-const fs = require("fs");
-const { saveLocation } = require("../models/db");
-const { lastSearch } = require("../models/db");
-const errorController = require("./error");
+const Location = require("../models/location");
 require("dotenv").config();
+
+exports.getHomePage = (req, res, next) => {
+  // loads the /Home page which contains the user form to search for MAC addresses
+  res.render("home", {
+    pageTitle: "Home",
+    path: "/",
+  });
+};
 
 exports.postGoogle = async (req, res, next) => {
   // Get the details from the user form
@@ -35,7 +40,22 @@ exports.postGoogle = async (req, res, next) => {
     const longitude = response["data"]["location"]["lng"];
     const accuracy = response["data"]["accuracy"];
 
-    await saveLocation(mac1, mac2, latitude, longitude, accuracy, details, ref);
+    // using the sequelize Location model and create function, save the returned details to the database 
+    Location.create({
+      mac1: mac1,
+      mac2: mac2,
+      latitude: latitude,
+      longitude: longitude,
+      accuracy: accuracy,
+      ref: ref,
+      details: details,
+    })
+    .then( result => {
+      console.log("Location saved to database")
+    })
+    .catch (err => {
+      console.log("There was an error saving location to database :" + err)
+    })
     res.redirect("/map");
   } catch (error) {
     if (error.response && error.response.status === 404) {

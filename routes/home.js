@@ -1,17 +1,13 @@
-const path = require("path");
 const express = require("express");
 const router = express.Router();
 
-const homeController = require("../controllers/home");
+const googleController = require("../controllers/google");
+const logsController = require("../controllers/logs");
 
-router.get("/", homeController.getHomePage);
+router.get("/", googleController.getHomePage);
 
-router.get("/map/:id", homeController.mapSpecificSearch);
+router.get("/search-history", logsController.getAllLogs);
 
-router.get("/map", homeController.getMap);
-
-router.get("/search", homeController.getSeeAllSearches);
-
-router.post("/search-results", homeController.SearchResults);
+router.post("/search-results", logsController.searchLogs);
 
 module.exports = router;
