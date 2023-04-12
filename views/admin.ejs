@@ -43,7 +43,7 @@
                 <td><%= locations[i].latitude%></td>
                 <td><%= locations[i].longitude%></td>
                 <td><%= locations[i].accuracy%>M</td>
-                <td> <a href="/admin/edit/<%= locations[i].id %>">Edit</a></td>
+                <td> <a href="/admin/edit/<%= locations[i]._id %>">Edit</a></td>
               </tr>
               <% }%>
           </tbody>

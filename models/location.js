@@ -1,42 +1,76 @@
-const Sequelize = require("sequelize");
+const mongodb = require("mongodb");
+const getDb = require("../util/database").getDb;
 
-const sequelize = require("../util/database");
+class Location {
+  constructor(mac1, mac2, latitude, longitude, accuracy, details, ref, id) {
+    (this.mac1 = mac1),
+      (this.mac2 = mac2),
+      (this.latitude = latitude),
+      (this.longitude = longitude),
+      (this.accuracy = accuracy),
+      (this.details = details),
+      (this.ref = ref),
+      (this._id = id);
+  }
 
-const Location = sequelize.define("location", {
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    allowNull: false,
-    primaryKey: true,
-  },
-  mac1: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  mac2: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  latitude: {
-    type: Sequelize.DOUBLE,
-    allowNull: false,
-  },
-  longitude: {
-    type: Sequelize.DOUBLE,
-    allowNull: false,
-  },
-  accuracy: {
-    type: Sequelize.DOUBLE,
-    allowNull: false,
-  },
-  ref: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  details: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-});
+  save() {
+    const db = getDb();
+    let dbOp;
+
+    if (this._id) {
+      // if id already exists, then update. If not, create
+      dbOp = db
+        .collection("locations")
+        .updateOne({ _id: new mongodb.ObjectId(this._id) }, { $set: this });
+    } else {
+      dbOp = db.collection("locations").insertOne(this);
+    }
+
+    return dbOp
+      .then((result) => {})
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  static fetchAll() {
+    const db = getDb();
+    return db
+      .collection("locations")
+      .find()
+      .toArray()
+      .then((locations) => {
+        return locations;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  static findById(locationId) {
+    const db = getDb();
+    return db
+      .collection("locations")
+      .find({ _id: new mongodb.ObjectId(locationId) })
+      .next()
+      .then((location) => {
+        return location;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  static deleteById(locationId) {
+    const db = getDb();
+    return db
+      .collection("locations")
+      .deleteOne({ _id: new mongodb.ObjectId(locationId) })
+      .then((result) => {})
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+}
 
 module.exports = Location;

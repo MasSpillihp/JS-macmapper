@@ -40,16 +40,9 @@ exports.postGoogle = async (req, res, next) => {
     const longitude = response["data"]["location"]["lng"];
     const accuracy = response["data"]["accuracy"];
 
-    // using the sequelize Location model and create function, save the returned details to the database 
-    Location.create({
-      mac1: mac1,
-      mac2: mac2,
-      latitude: latitude,
-      longitude: longitude,
-      accuracy: accuracy,
-      ref: ref,
-      details: details,
-    })
+    // using mongoDB and Location model
+    const location = new Location(mac1, mac2, latitude,longitude,accuracy,details,ref);
+    location.save()
     .then( result => {
       console.log("Location saved to database")
     })

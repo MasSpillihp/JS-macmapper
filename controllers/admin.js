@@ -1,9 +1,11 @@
+const mongodb = require("mongodb");
 const Location = require("../models/location");
-const { Sequelize } = require("sequelize");
+
+const ObjectId = mongodb.ObjectId;
 
 exports.getAdminLogs = async (req, res, next) => {
   // loads the 'Search History' page which will hold a table containing all the searches performed in groups of 10
-  Location.findAll()
+  Location.fetchAll()
     .then((locations) => {
       const limit = 10; // sets the limit records per page to 10
       const totalCount = locations.length;
@@ -24,38 +26,38 @@ exports.getAdminLogs = async (req, res, next) => {
     });
 };
 
-exports.searchAdminLogs = async (req, res, next) => {
-  // takes search query from search.ejs form and queries database. renders /search-results with results
-  const searchQuery = req.body.query;
-  //prettier-ignore
-  Location.findAll({
-        where: {
-            ref: {
-                [Sequelize.Op.like]: '%'+searchQuery+'%'
-            }
-        }
-    }).then(locations => {
-        const limit = 10; // sets the limit records per page to 10
-        const totalCount = locations.length;
-        let currentPage = req.query.page ? parseInt(req.query.page) : 1; // current page number
-        let startIndex = (currentPage - 1) * limit; // index of first record to show on current page
-        res.render("admin-search-results", {
-            pageTitle: "Search Results",
-            path: "/admin/search-history",
-            locations: locations,
-            startIndex: startIndex,
-            limit: limit,
-            totalCount: totalCount,
-            currentPage: currentPage,
-        })
-    }
-    )
-};
+// exports.searchAdminLogs = async (req, res, next) => {
+//   // takes search query from search.ejs form and queries database. renders /search-results with results
+//   const searchQuery = req.body.query;
+//   //prettier-ignore
+//   Location.findAll({
+//         where: {
+//             ref: {
+//                 [Sequelize.Op.like]: '%'+searchQuery+'%'
+//             }
+//         }
+//     }).then(locations => {
+//         const limit = 10; // sets the limit records per page to 10
+//         const totalCount = locations.length;
+//         let currentPage = req.query.page ? parseInt(req.query.page) : 1; // current page number
+//         let startIndex = (currentPage - 1) * limit; // index of first record to show on current page
+//         res.render("admin-search-results", {
+//             pageTitle: "Search Results",
+//             path: "/admin/search-history",
+//             locations: locations,
+//             startIndex: startIndex,
+//             limit: limit,
+//             totalCount: totalCount,
+//             currentPage: currentPage,
+//         })
+//     }
+//     )
+// };
 
 exports.getSpecificLocation = (req, res, next) => {
   locationId = req.params.id;
 
-  Location.findByPk(locationId)
+  Location.findById(locationId)
     .then((location) => {
       (mac1 = location.mac1),
         (mac2 = location.mac2),
@@ -74,27 +76,41 @@ exports.getSpecificLocation = (req, res, next) => {
     .catch();
 };
 
-exports.postEditLocation = (req, res, next) => {
+exports.postEditLocation = async (req, res, next) => {
+  const mac1 = req.body.mac1;
+  const mac2 = req.body.mac2;
   const locationId = req.body.id;
   const updatedRef = req.body.ref;
   const updatedDetails = req.body.details;
 
   if (req.body.hasOwnProperty("edit_button")) {
-    Location.findByPk(locationId)
-      .then((location) => {
-        (location.ref = updatedRef),
-          (location.details = updatedDetails),
-          location.save();
-        console.log("Location updated");
+    const priorLocation = await Location.findById(locationId);
+    const lat = priorLocation.latitude;
+    const long = priorLocation.longitude;
+    const accuracy = priorLocation.accuracy;
+
+    const newLocation = new Location(
+      mac1,
+      mac2,
+      lat,
+      long,
+      accuracy,
+      updatedDetails,
+      updatedRef,
+      new ObjectId(locationId)
+    );
+    newLocation
+      .save()
+      .then(() => {
+        console.log("Location ID: " + locationId + " successfully updated");
       })
       .catch((error) => {
         console.log(error);
       });
   } else if (req.body.hasOwnProperty("delete_button")) {
-    Location.findByPk(locationId).then((location) => {
-      location.destroy();
-      console.log("Location has been deleted");
-    });
+    await Location.deleteById(locationId);
+    console.log("Location ID: " + locationId + " has been deleted");
   }
+
   res.redirect("/admin");
 };
