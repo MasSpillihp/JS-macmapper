@@ -224,6 +224,14 @@ body {
   border: 1px solid #ccc;
 }
 
+.form-input.readonly {
+  padding: 5px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: rgba(192, 192, 192, 0.5);
+}
+
 .query-form .btn {
   max-height: 50px;
 }

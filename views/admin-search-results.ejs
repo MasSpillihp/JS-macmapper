@@ -43,18 +43,18 @@
                 <td><%= locations[i].latitude%></td>
                 <td><%= locations[i].longitude%></td>
                 <td><%= locations[i].accuracy%>M</td>
-                <td> <a href="/map/<%= locations[i].id %>">Map</a></td>
+                <td> <a href="/edit/<%= locations[i].id %>">Edit</a></td>
               </tr>
               <% }%>
           </tbody>
         </table>
         <div class="next-prev-btn">
           <% if (startIndex > 0 ) { %>
-            <a href="/search-history?limit=<%= limit %>&page=<%= currentPage - 1 %>" class="btn">Prev</a>
+            <a href="/admin/?limit=<%= limit %>&page=<%= currentPage - 1 %>" class="btn">Prev</a>
           <% } %>
 
           <% if (startIndex + limit < totalCount) { %>
-            <a href="/search-history?limit=<%= limit %>&page=<%= currentPage + 1 %>" class="btn">Next</a>
+            <a href="/admin/?limit=<%= limit %>&page=<%= currentPage + 1 %>" class="btn">Next</a>
           <% } %>
         </div>
         

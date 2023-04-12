@@ -10,7 +10,55 @@
       <%- include('./includes/navigation.ejs') %>
 
     <div class="main">
+      <div class="query-container">
+        <form class="query-form" action="/admin/search-results" method="post">
+          <div class="form-control">
+            <label for="">Search</label>
+            <input type="text" name="query" id="query" class="form-input">
+          </div>
+          <button class="btn" type="submit">Search</button>
+        </form>
+      </div>
+      <div class="table-container">
+        
 
+        <table class="table-details">
+          <thead>
+            <tr>
+              <th>Reference</th>
+              <th>MAC Address 1</th>
+              <th>MAC Address 2</th>
+              <th>Lat</th>
+              <th>Long</th>
+              <th>Accuracy</th>
+              <th>Map</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (var i = startIndex; i < (startIndex + limit) && i < locations.length; i++) {%>
+              <tr>
+                <td><%= locations[i].ref%></td>
+                <td><%= locations[i].mac1%></td>
+                <td><%= locations[i].mac2%></td>
+                <td><%= locations[i].latitude%></td>
+                <td><%= locations[i].longitude%></td>
+                <td><%= locations[i].accuracy%>M</td>
+                <td> <a href="/admin/edit/<%= locations[i].id %>">Edit</a></td>
+              </tr>
+              <% }%>
+          </tbody>
+        </table>
+        <div class="next-prev-btn">
+          <% if (startIndex > 0 ) { %>
+            <a href="/admin?limit=<%= limit %>&page=<%= currentPage - 1 %>" class="btn">Prev</a>
+          <% } %>
+
+          <% if (startIndex + limit < totalCount) { %>
+            <a href="/admin?limit=<%= limit %>&page=<%= currentPage + 1 %>" class="btn">Next</a>
+          <% } %>
+        </div>
+        
+      </div>
     </div>
 
     <%- include('./includes/footer.ejs') %>

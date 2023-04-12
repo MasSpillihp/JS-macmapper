@@ -1,0 +1,42 @@
+<%- include('./includes/head.ejs') %>
+  </head>
+  <body>
+    <div class="content-wrapper">
+      <div class="header">
+        <div class="header__title__1">MAC Mapper</div>
+        <div class="header__title__2"><%= pageTitle %></div>
+      </div>
+
+      <%- include('./includes/navigation.ejs') %>
+
+      <div class="main">
+        <form class="mac-form" action="/admin/edit/" method="POST">
+          <div class="form-control">
+            <label for="mac1" class="form-label">MAC Address 1</label>
+            <input type="text" name="mac1" id="mac1" class="form-input readonly" value="<%= mac1%>" readonly> 
+          </div>
+          <div class="form-control">
+            <label for="mac2" class="form-label">MAC Address 2</label>
+            <input type="text" name="mac2" id="mac2" class="form-input readonly" value="<%= mac2%>" readonly>
+            <input type="hidden" name="id" id="id" class="form-input readonly" value="<%= id%>" readonly>  
+          </div>
+
+          <div class="form-control">
+            <label for="ref" class="form-label">Reference</label>
+            <input type="text" name="ref" id="ref" class="form-input" value="<%= ref%>"> 
+          </div>
+
+          <div class="form-control">
+            <label for="details" class="form-label">Details</label>
+            <input type="text" name="details" id="details" class="form-input" value="<%= details%>"> 
+          </div>
+
+          <button class="btn" type="submit" name="edit_button">Edit</button>
+          <button class="btn" type="submit" name="delete_button">Delete</button>
+        </form>
+      </div>
+
+      <%- include('./includes/footer.ejs') %>
+    </div>
+  </body>
+</html>

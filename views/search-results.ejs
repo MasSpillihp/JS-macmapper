@@ -50,11 +50,11 @@
         </table>
         <div class="next-prev-btn">
           <% if (startIndex > 0 ) { %>
-            <a href="/search?limit=<%= limit %>&page=<%= currentPage - 1 %>" class="btn">Prev</a>
+            <a href="/search-history?limit=<%= limit %>&page=<%= currentPage - 1 %>" class="btn">Prev</a>
           <% } %>
 
           <% if (startIndex + limit < totalCount) { %>
-            <a href="/search?limit=<%= limit %>&page=<%= currentPage + 1 %>" class="btn">Next</a>
+            <a href="/search-history?limit=<%= limit %>&page=<%= currentPage + 1 %>" class="btn">Next</a>
           <% } %>
         </div>
         

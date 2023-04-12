@@ -41,7 +41,7 @@ exports.searchLogs = async (req, res, next) => {
         let startIndex = (currentPage - 1) * limit; // index of first record to show on current page
         res.render("search-results", {
             pageTitle: "Search Results",
-            path: "/search",
+            path: "/search-history",
             locations: locations,
             startIndex: startIndex,
             limit: limit,
