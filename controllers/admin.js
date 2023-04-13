@@ -26,35 +26,31 @@ exports.getAdminLogs = async (req, res, next) => {
     });
 };
 
-// exports.searchAdminLogs = async (req, res, next) => {
-//   // takes search query from search.ejs form and queries database. renders /search-results with results
-//   const searchQuery = req.body.query;
-//   //prettier-ignore
-//   Location.findAll({
-//         where: {
-//             ref: {
-//                 [Sequelize.Op.like]: '%'+searchQuery+'%'
-//             }
-//         }
-//     }).then(locations => {
-//         const limit = 10; // sets the limit records per page to 10
-//         const totalCount = locations.length;
-//         let currentPage = req.query.page ? parseInt(req.query.page) : 1; // current page number
-//         let startIndex = (currentPage - 1) * limit; // index of first record to show on current page
-//         res.render("admin-search-results", {
-//             pageTitle: "Search Results",
-//             path: "/admin/search-history",
-//             locations: locations,
-//             startIndex: startIndex,
-//             limit: limit,
-//             totalCount: totalCount,
-//             currentPage: currentPage,
-//         })
-//     }
-//     )
-// };
+exports.searchAdminLogs = async (req, res, next) => {
+  // takes search query from search.ejs form and queries database. renders /search-results with results
+  const searchQuery = req.body.query;
+  //prettier-ignore
+  Location.queryLocationRef(searchQuery)
+  .then(locations => {
+        const limit = 10; // sets the limit records per page to 10
+        const totalCount = locations.length;
+        let currentPage = req.query.page ? parseInt(req.query.page) : 1; // current page number
+        let startIndex = (currentPage - 1) * limit; // index of first record to show on current page
+        res.render("admin-search-results", {
+            pageTitle: "Search Results",
+            path: "/admin/search-history",
+            locations: locations,
+            startIndex: startIndex,
+            limit: limit,
+            totalCount: totalCount,
+            currentPage: currentPage,
+        })
+    }
+    )
+};
 
 exports.getSpecificLocation = (req, res, next) => {
+  // opens the admin-edit page which grabs _id from the URL. Allows admin to make changes to location
   locationId = req.params.id;
 
   Location.findById(locationId)
@@ -77,6 +73,7 @@ exports.getSpecificLocation = (req, res, next) => {
 };
 
 exports.postEditLocation = async (req, res, next) => {
+  // posts the changes to the new Location model and saved in db
   const mac1 = req.body.mac1;
   const mac2 = req.body.mac2;
   const locationId = req.body.id;

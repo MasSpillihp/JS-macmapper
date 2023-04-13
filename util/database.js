@@ -14,8 +14,8 @@ const mongoConnect = (callback) => {
       "@cluster.e7h7aso.mongodb.net/?retryWrites=true&w=majority"
   )
     .then((client) => {
-      console.log("Successfully Connected to MongoDB");
-      _db = client.db();
+      console.log("Successfully Connected to MAC Mapper database");
+      _db = client.db("macmapper");
       callback();
     })
     .catch((error) => {

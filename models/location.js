@@ -71,6 +71,38 @@ class Location {
         console.log(err);
       });
   }
+
+  static findLastLocation() {
+    const db = getDb();
+    return db
+      .collection("locations")
+      .find()
+      .sort({ _id: -1 })
+      .limit(1)
+      .toArray()
+      .then((location) => {
+        return location;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  //prettier-ignore
+  static queryLocationRef (queryText) {
+    const db = getDb()
+    const regex = new RegExp(queryText, 'i')
+    return db
+    .collection('locations')
+    .find({ref: {$regex: regex}})
+    .toArray()
+    .then((locationArray) => {
+      return locationArray
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
 }
 
 module.exports = Location;
