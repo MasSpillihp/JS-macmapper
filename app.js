@@ -1,7 +1,9 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
-const mongoConnect = require("./util/database").mongoConnect;
+const mongoose = require("mongoose");
+
+require("dotenv").config();
 
 const app = express();
 app.set("view engine", "ejs");
@@ -19,6 +21,17 @@ app.use(mapRoutes);
 app.use(adminRoutes);
 app.use(errorController.get404);
 
-mongoConnect(() => {
-  app.listen(3000);
-});
+mongoose
+  .connect(
+    "mongodb+srv://" +
+      process.env.MONGO_USER +
+      ":" +
+      process.env.MONGO_PASSWORD +
+      "@cluster.e7h7aso.mongodb.net/macmapper?retryWrites=true&w=majority"
+  )
+  .then((result) => {
+    app.listen(3000);
+  })
+  .catch((error) => {
+    console.log(error);
+  });

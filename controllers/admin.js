@@ -5,7 +5,7 @@ const ObjectId = mongodb.ObjectId;
 
 exports.getAdminLogs = async (req, res, next) => {
   // loads the 'Search History' page which will hold a table containing all the searches performed in groups of 10
-  Location.fetchAll()
+  Location.find()
     .then((locations) => {
       const limit = 10; // sets the limit records per page to 10
       const totalCount = locations.length;
@@ -30,7 +30,7 @@ exports.searchAdminLogs = async (req, res, next) => {
   // takes search query from search.ejs form and queries database. renders /search-results with results
   const searchQuery = req.body.query;
   //prettier-ignore
-  Location.queryLocationRef(searchQuery)
+  Location.find({ref: {$regex: searchQuery, $options: 'i'}})
   .then(locations => {
         const limit = 10; // sets the limit records per page to 10
         const totalCount = locations.length;
@@ -86,26 +86,25 @@ exports.postEditLocation = async (req, res, next) => {
     const long = priorLocation.longitude;
     const accuracy = priorLocation.accuracy;
 
-    const newLocation = new Location(
-      mac1,
-      mac2,
-      lat,
-      long,
-      accuracy,
-      updatedDetails,
-      updatedRef,
-      new ObjectId(locationId)
-    );
-    newLocation
-      .save()
-      .then(() => {
+    Location.findById(locationId)
+      .then((location) => {
+        (location.mac1 = mac1),
+          (location.mac2 = mac2),
+          (location.latitude = lat),
+          (location.longitude = long),
+          (location.accuracy = accuracy),
+          (location.details = updatedDetails),
+          (location.ref = updatedRef),
+          location.save();
+      })
+      .then((result) => {
         console.log("Location ID: " + locationId + " successfully updated");
       })
       .catch((error) => {
         console.log(error);
       });
   } else if (req.body.hasOwnProperty("delete_button")) {
-    await Location.deleteById(locationId);
+    await Location.findByIdAndRemove(locationId);
     console.log("Location ID: " + locationId + " has been deleted");
   }
 

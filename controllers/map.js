@@ -2,9 +2,9 @@ const Location = require("../models/location");
 
 exports.getMap = async (req, res, next) => {
   // loads the /map page which defaults to loads the last searched MAC address
-  Location.findLastLocation()
-    .then((locationArray) => {
-      const lastLocation = locationArray[0];
+  Location.findOne()
+    .sort({ _id: -1 })
+    .then((lastLocation) => {
       res.render("map", {
         pageTitle: "Map",
         path: "/map",
