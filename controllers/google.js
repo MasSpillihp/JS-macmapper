@@ -4,7 +4,7 @@ require("dotenv").config();
 
 exports.getHomePage = (req, res, next) => {
   // loads the /Home page which contains the user form to search for MAC addresses
-  res.render("home", {
+  res.render("./home/home", {
     pageTitle: "Home",
     path: "/",
   });
@@ -53,7 +53,7 @@ exports.postGoogle = async (req, res, next) => {
   } catch (error) {
     if (error.response && error.response.status === 404) {
       //render specific 404 geolocation not found error page 
-      res.render('../views/error', {
+      res.render('../views/errors/error', {
         pageTitle: 'Error',
         path: '/error',
         errorName: 'Geolocation error: MAC address not found'
@@ -62,7 +62,7 @@ exports.postGoogle = async (req, res, next) => {
     } else {
       // catches all other errors
       console.error(error);
-      res.render('../views/error', {
+      res.render('../views/errors/error', {
         pageTitle: 'Error',
         path: '/error',
         errorName: 'An error occured with the MAC address API'},)

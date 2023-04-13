@@ -9,7 +9,7 @@ exports.getAllLogs = (req, res, next) => {
       const totalCount = locations.length;
       let currentPage = req.query.page ? parseInt(req.query.page) : 1; // current page number
       let startIndex = (currentPage - 1) * limit; // index of first record to show on current page
-      res.render("search-history", {
+      res.render("./home/search-history", {
         pageTitle: "Search History",
         path: "/search-history",
         locations: locations,
@@ -34,7 +34,7 @@ exports.searchLogs = async (req, res, next) => {
         const totalCount = locations.length;
         let currentPage = req.query.page ? parseInt(req.query.page) : 1; // current page number
         let startIndex = (currentPage - 1) * limit; // index of first record to show on current page
-        res.render("search-results", {
+        res.render("./home/search-results", {
             pageTitle: "Search Results",
             path: "/search-history",
             locations: locations,

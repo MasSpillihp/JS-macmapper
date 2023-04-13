@@ -1,11 +1,11 @@
-<%- include('./includes/head.ejs') %>
+<%- include('../includes/head.ejs') %>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
       const map = L.map("mapid").setView([<%= latitude%>, <%= longitude%>], 13);
-      console.log(<%=latitude%>)
+      console.log(<%= latitude %>)
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution:'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
@@ -27,7 +27,7 @@
         <div class="header__title__2"><%= pageTitle %></div>
       </div>
 
-      <%- include('./includes/navigation.ejs') %>
+      <%- include('../includes/navigation.ejs') %>
 
     <div class="main">
       <div id="mapid"></div>
@@ -52,7 +52,7 @@
 
     </div>
 
-    <%- include('./includes/footer.ejs') %>
+    <%- include('../includes/footer.ejs') %>
     </div>
   </body>
 

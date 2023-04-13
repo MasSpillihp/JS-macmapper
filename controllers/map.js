@@ -5,7 +5,7 @@ exports.getMap = async (req, res, next) => {
   Location.findOne()
     .sort({ _id: -1 })
     .then((lastLocation) => {
-      res.render("map", {
+      res.render("./maps/map", {
         pageTitle: "Map",
         path: "/map",
         ref: lastLocation.ref,
@@ -28,7 +28,7 @@ exports.mapSpecificSearch = async (req, res, next) => {
 
   const locationId = req.params.id;
   Location.findById(locationId).then((location) => {
-    res.render("specific-map", {
+    res.render("./maps/specific-map", {
       pageTitle: "View Search",
       path: "/map",
       location: location,

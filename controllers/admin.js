@@ -11,7 +11,7 @@ exports.getAdminLogs = async (req, res, next) => {
       const totalCount = locations.length;
       let currentPage = req.query.page ? parseInt(req.query.page) : 1; // current page number
       let startIndex = (currentPage - 1) * limit; // index of first record to show on current page
-      res.render("admin", {
+      res.render("./admin/admin", {
         pageTitle: "Admin",
         path: "/admin",
         locations: locations,
@@ -36,9 +36,9 @@ exports.searchAdminLogs = async (req, res, next) => {
         const totalCount = locations.length;
         let currentPage = req.query.page ? parseInt(req.query.page) : 1; // current page number
         let startIndex = (currentPage - 1) * limit; // index of first record to show on current page
-        res.render("admin-search-results", {
+        res.render("./admin/admin-search-results", {
             pageTitle: "Search Results",
-            path: "/admin/search-history",
+            path: "/search-history",
             locations: locations,
             startIndex: startIndex,
             limit: limit,
