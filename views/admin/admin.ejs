@@ -12,6 +12,7 @@
     <div class="main">
       <div class="query-container">
         <form class="query-form" action="/admin/search-results" method="post">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <div class="form-control">
             <label for="">Search</label>
             <input type="text" name="query" id="query" class="form-input">

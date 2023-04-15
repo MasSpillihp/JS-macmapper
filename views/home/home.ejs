@@ -11,6 +11,7 @@
 
       <div class="main">
         <form class="mac-form" action="/googlesearch" method="POST">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <div class="form-control">
             <label for="mac1" class="form-label">MAC Address 1</label>
             <input type="text" name="mac1" id="mac1" class="form-input"> 
