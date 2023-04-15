@@ -2,33 +2,51 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
 
 require("dotenv").config();
 
+MONGODB_URI =
+  "mongodb+srv://" +
+  process.env.MONGO_USER +
+  ":" +
+  process.env.MONGO_PASSWORD +
+  "@cluster.e7h7aso.mongodb.net/macmapper";
+
 const app = express();
+const store = new MongoDBStore({
+  uri: MONGODB_URI,
+  collection: "sessions",
+});
+
 app.set("view engine", "ejs");
 
 const homeRoutes = require("./routes/home");
 const mapRoutes = require("./routes/map");
 const adminRoutes = require("./routes/admin");
+const authRoutes = require("./routes/auth");
 const errorController = require("./controllers/error");
 
 app.use(bodyParser.urlencoded({ extendedL: false }));
 app.use(express.static(path.join(__dirname, "public")));
+app.use(
+  session({
+    secret: "mysecret",
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+  })
+);
 
 app.use(homeRoutes);
 app.use(mapRoutes);
+app.use(authRoutes);
 app.use(adminRoutes);
 app.use(errorController.get404);
 
 mongoose
-  .connect(
-    "mongodb+srv://" +
-      process.env.MONGO_USER +
-      ":" +
-      process.env.MONGO_PASSWORD +
-      "@cluster.e7h7aso.mongodb.net/macmapper?retryWrites=true&w=majority"
-  )
+  .connect(MONGODB_URI)
   .then((result) => {
     app.listen(3000);
   })

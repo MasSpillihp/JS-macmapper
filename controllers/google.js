@@ -7,11 +7,12 @@ exports.getHomePage = (req, res, next) => {
   res.render("./home/home", {
     pageTitle: "Home",
     path: "/",
+    isAuthenticated: req.session.isLoggedIn,
   });
 };
 
 exports.postGoogle = async (req, res, next) => {
-  // Get the details from the user form
+  // Get the details from the user form and submits a POST API request to google for geolocation data
 
   const mac1 = req.body.mac1;
   const mac2 = req.body.mac2;
@@ -56,7 +57,8 @@ exports.postGoogle = async (req, res, next) => {
       res.render('../views/errors/error', {
         pageTitle: 'Error',
         path: '/error',
-        errorName: 'Geolocation error: MAC address not found'
+        errorName: 'Geolocation error: MAC address not found',
+        isAuthenticated: req.session.isLoggedIn,
       })
 
     } else {
@@ -65,7 +67,8 @@ exports.postGoogle = async (req, res, next) => {
       res.render('../views/errors/error', {
         pageTitle: 'Error',
         path: '/error',
-        errorName: 'An error occured with the MAC address API'},)
+        errorName: 'An error occured with the MAC address API',
+        isAuthenticated: req.session.isLoggedIn,},)
   }
 }
 };

@@ -15,6 +15,7 @@ exports.getMap = async (req, res, next) => {
         latitude: lastLocation.latitude,
         longitude: lastLocation.longitude,
         zoom: 10,
+        isAuthenticated: req.session.isLoggedIn,
       });
     })
     .catch((error) => {
@@ -38,6 +39,7 @@ exports.mapSpecificSearch = async (req, res, next) => {
       accuracy: location.accuracy,
       latitude: location.latitude,
       longitude: location.longitude,
+      isAuthenticated: req.session.isLoggedIn,
     });
   });
 };

@@ -6,11 +6,33 @@
         <li class="main-nav__item">
             <a class="<%= path === '/map'? 'active' :''%>" href="/map">Map</a>
         </li>
+        <% if (isAuthenticated) { %>
         <li class="main-nav__item">
             <a class="<%= path === '/search-history'? 'active' :''%>" href="/search-history">History</a>
         </li>
+
         <li class="main-nav__item">
             <a class="<%= path === '/admin'? 'active' :''%>" href="/admin">Admin</a>
         </li>
+        <% } %>
+    </ul>
+
+    <ul class="main-nav__item-list">
+        <% if (!isAuthenticated) { %>
+        <li class="main-nav__item">
+            <a class="<%= path === '/login'? 'active' :''%>" href="/login">Login</a>
+        </li>
+        <li class="main-nav__item">
+            <a class="<%= path === '/signup'? 'active' :''%>" href="/signup">Sign up</a>
+        </li>
+
+        <% } else { %>
+
+        <li class="main-nav__item">
+            <form action="/logout" method="post">
+                <button type="submit">Logout</button>
+            </form>
+        </li>
+        <% }%>
     </ul>
 </div>

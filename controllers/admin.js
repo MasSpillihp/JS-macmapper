@@ -19,6 +19,7 @@ exports.getAdminLogs = async (req, res, next) => {
         limit: limit,
         totalCount: totalCount,
         currentPage: currentPage,
+        isAuthenticated: req.session.isLoggedIn,
       });
     })
     .catch((error) => {
@@ -44,6 +45,7 @@ exports.searchAdminLogs = async (req, res, next) => {
             limit: limit,
             totalCount: totalCount,
             currentPage: currentPage,
+            isAuthenticated: req.session.isLoggedIn,
         })
     }
     )
@@ -59,7 +61,7 @@ exports.getSpecificLocation = (req, res, next) => {
         (mac2 = location.mac2),
         (ref = location.ref),
         (details = location.details),
-        res.render("admin-edit", {
+        res.render("./admin/admin-edit", {
           pageTitle: "Edit Location",
           path: "/admin/edit",
           mac1: mac1,
@@ -67,6 +69,7 @@ exports.getSpecificLocation = (req, res, next) => {
           ref: ref,
           details: details,
           id: locationId,
+          isAuthenticated: req.session.isLoggedIn,
         });
     })
     .catch();

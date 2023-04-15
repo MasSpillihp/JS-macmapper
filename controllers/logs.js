@@ -17,6 +17,7 @@ exports.getAllLogs = (req, res, next) => {
         limit: limit,
         totalCount: totalCount,
         currentPage: currentPage,
+        isAuthenticated: req.session.isLoggedIn,
       });
     })
     .catch((error) => {
@@ -42,6 +43,7 @@ exports.searchLogs = async (req, res, next) => {
             limit: limit,
             totalCount: totalCount,
             currentPage: currentPage,
+            isAuthenticated: req.session.isLoggedIn,
         })
     }
     )

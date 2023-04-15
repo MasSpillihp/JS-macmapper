@@ -44,8 +44,10 @@ body {
   grid-column: 1/2;
   grid-row: 1/4;
   background-color: #005792;
-  justify-content: space-around;
   padding: 55px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .main-nav__item .active {
@@ -61,7 +63,8 @@ body {
 }
 
 .main-nav__item-list {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -81,6 +84,28 @@ body {
   margin: 0 -0.25rem;
   padding: 0 0.25rem;
   transition: color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.main-nav__item button {
+  text-decoration: none;
+  color: white;
+  box-shadow: inset 0 0 0 0 white;
+  margin: 0 -0.25rem;
+  padding: 0 0.25rem;
+  transition: color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  background-color: 0;
+  background: none;
+  border: none;
+}
+
+.main-nav__item form button {
+  font-size: 1rem;
+}
+
+.main-nav__item form button:hover {
+  color: #005792;
+  box-shadow: inset 100px 0 0 0 white;
+  cursor: pointer;
 }
 
 .main-nav__item a:hover {
