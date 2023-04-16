@@ -1,13 +1,21 @@
 const axios = require("axios");
+const { validationResult } = require("express-validator");
 const Location = require("../models/location");
 require("dotenv").config();
 
 exports.getHomePage = (req, res, next) => {
   // loads the /Home page which contains the user form to search for MAC addresses
+  let flash = req.flash("info");
+  if (flash.length > 0) {
+    flashMessage = flash[0];
+  } else {
+    flashMessage = null;
+  }
   res.render("./home/home", {
     pageTitle: "Home",
     path: "/",
     isAuthenticated: req.session.isLoggedIn,
+    flashMessage: flashMessage,
   });
 };
 
@@ -19,6 +27,17 @@ exports.postGoogle = async (req, res, next) => {
   const ref = req.body.ref;
   const details = req.body.details;
   const apiKey = process.env.GOOGLE_API_KEY;
+  const errors = validationResult(req);
+
+  // MAC validation
+  if (!errors.isEmpty()) {
+    return res.status(422).render("./home/home", {
+      pageTitle: "Home",
+      path: "/",
+      isAuthenticated: req.session.isLoggedIn,
+      flashMessage: errors.array()[0].msg,
+    });
+  }
 
   // post request to Google
   // prettier-ignore

@@ -273,3 +273,18 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+.flash-message {
+  background-color: #b9c9ff;
+  border: 1px solid #4771fa;
+  padding: 1rem;
+  border-radius: 5px;
+  color: white;
+  font-weight: 600;
+}
+
+.flash-message,
+.flash-message__error {
+  background-color: rgb(255, 176, 176);
+  border: 1px solid red;
+}

@@ -10,7 +10,10 @@
       <%- include('../includes/navigation.ejs') %>
 
       <div class="main">
-        <form class="mac-form" action="/signup" method="POST">
+        <% if (flashMessage) { %>
+          <div class="flash-message flash-message__error"><%= flashMessage %></div>
+          <% } %>
+        <form class="mac-form" action="/signup" method="POST" novalidate>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <div class="form-control">
             <label for="email" class="form-label">Email</label>
